@@ -2,7 +2,7 @@ import discord
 import os
 import asyncio
 import random
-
+import Database.Secret as secret
 import DiscordBot.Minecraft as minecraft
 
 from DiscordBot.Lolapi import Lolapi
@@ -10,19 +10,17 @@ from DiscordBot.Convert import Convert
 from DiscordBot.Dex import Dex
 from DiscordBot.Waifu import Waifu
 from DiscordBot.Weather import Weather
-
 from Database.Connect import Connection
 from MiningBot.Hentai import Hentai
 from discord.ext import tasks, commands
 
-
-has_start = False
 header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'}
-db = Connection('localhost', 'root', 'Sad1996.', 'discord2')
+db = Connection(secret.SERVER, secret.USERNAME, secret.PASSWORD, secret.DATABASE)
 database = db.connect()
 client = discord.Client()
-token = os.environ.get('discord_token')
+
 waifu = Waifu()
+
 try:
     status = Lolapi()
 except:
@@ -187,4 +185,4 @@ async def on_message(message):
         money = int(money)
         await message.channel.send(f'{money} EURO -> {convertor.convert(money)} RON')
         
-client.run(token)
+client.run(secret.TOKEN)
