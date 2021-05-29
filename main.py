@@ -5,7 +5,7 @@ import random
 import Database.Secret as secret
 import DiscordBot.Minecraft as minecraft
 
-from DiscordBot.Lolapi import Lolapi
+# from DiscordBot.Lolapi import Lolapi
 from DiscordBot.Convert import Convert
 from DiscordBot.Dex import Dex
 from DiscordBot.Waifu import Waifu
@@ -21,16 +21,15 @@ client = discord.Client()
 
 waifu = Waifu()
 
-try:
-    status = Lolapi()
-except:
-    print('Update your API KEY')
+# try:
+#     status = Lolapi()
+# except:
+#     print('Update your API KEY')
 
 @tasks.loop(minutes=60.0)
 async def afk_destroyer():
     channel = client.get_channel(831217157022416956)
     await channel.send(f'{db.bot_afk(database)}')
-
 
 @client.event
 async def on_ready():
@@ -59,10 +58,9 @@ async def on_message(message):
             picture = db.select_nude(database)
             picture = str(picture)
             await message.channel.send(picture)
-
+    
+    # HATSUNE ROOM COMMANDS
     if str(message.channel) in hatsune:
-
-
         if message.content.startswith('start minecraft server'):
             minecraft.start()
             await message.channel.send('Minecraft server is started')
@@ -133,12 +131,16 @@ async def on_message(message):
             weather = Weather(header)
             await message.channel.send(f'The weather in Bucharest is {weather.weather()}')
             del weather
+        if message.content.startswith('currently weather'):
+            weather = Weather(header)
+            embed = discord.Embed(title=f'Details weather', description=weather.current_weather(), color=0xFF5733)
+            await message.channel.send(embed=embed)
+            del weather
         
         if message.content.startswith('how many words you know?'):
             words = db.count_dex(database)
             await message.channel.send(f"In this moment I know {words} words. Thank you to have care about me. I am happy to learn more new things from you. Please fill me with new knowledge")
 
-        print(f'hatsune chat: {message.content}')
         patterns = message.content
         checker = db.patterns_keys(database, patterns)
         checker = str(checker)
@@ -166,8 +168,6 @@ async def on_message(message):
         await message.channel.send(f'{picture}')
 
     if message.content.startswith('status'):
-        print(message.content)
-
         if message.content != 'status':
             username = message.content.replace('status', '')
             username = username.strip()
@@ -175,7 +175,6 @@ async def on_message(message):
         else:
             username = db.status_lol(database, str(message.author))
             await message.channel.send(status.status(username))
-
 
     if message.content.startswith('convert'):
         convertor = Convert(header)
@@ -185,4 +184,4 @@ async def on_message(message):
         money = int(money)
         await message.channel.send(f'{money} EURO -> {convertor.convert(money)} RON')
         
-client.run(secret.TOKEN)
+client.run(secret.TOKEN) 
