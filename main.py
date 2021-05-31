@@ -26,15 +26,15 @@ waifu = Waifu()
 # except:
 #     print('Update your API KEY')
 
-@tasks.loop(minutes=60.0)
-async def afk_destroyer():
-    channel = client.get_channel(831217157022416956)
-    await channel.send(f'{db.bot_afk(database)}')
+# @tasks.loop(minutes=60.0)
+# async def afk_destroyer():
+#     channel = client.get_channel(831217157022416956)
+#     await channel.send(f'{db.bot_afk(database)}')
 
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-    afk_destroyer.start()
+# @client.event
+# async def on_ready():
+#     print('We have logged in as {0.user}'.format(client))
+#     afk_destroyer.start()
 
 @client.event
 async def on_message(message):
